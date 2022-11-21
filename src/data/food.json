@@ -1,0 +1,31 @@
+{
+ "Recipes": [   
+        {
+"title": "Pasta",
+"image": "https://www.budgetbytes.com/wp-content/uploads/2013/07/Creamy-Tomato-Spinach-Pasta-V2-bowl-768x1024.jpg",
+"description" : "Creamy tomato spinach pasta",
+"rating" : "3 out of 5 stars",
+"have tried" : "No"
+        },
+
+{
+"title": "Pizza",
+"image": "https://www.recipetineats.com/wp-content/uploads/2020/05/Pepperoni-Pizza_7.jpg",
+"description" : "Delicious spicy pepperoni pizza",
+"rating" : "4 out of 5 stars",
+"have tried" : "Yes"
+
+},
+{
+"title": "Coffee",
+"image": "https://images.immediate.co.uk/production/volatile/sites/30/2020/08/flat-white-3402c4f.jpg",
+"description" : "The perfect balance of bitter and creamy",
+"rating" : "5 out of 5 stars",
+"have tried" : "Yes"
+}      
+  ]
+}
+
+
+
+
