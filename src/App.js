@@ -1,93 +1,50 @@
-import logo from "./logo.svg";
+import { useState } from 'react';
 import "./App.css";
-import { useState } from "react";
+import LoadingSpinner from './LoadingSpinner';
 
-
+const endPoint = " https://openlibrary.org/authors/OL23919A/works.json?limit=10"
 
 function App() {
-  const [task, setTask] = useState({
-    id: 0,
-    taskDescription: "",
-    isCompleted: false,
-  });
+  const [books, setBooks] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [todos, setTodos] = useState([]);
-
-  function addTodos(e) {
-    e.preventDefault();
-    setTodos([
-      ...todos,
-      {
-        id: todos.length + 1,
-        taskDescription: task.taskDescription,
-        isCompleted: false,
-      },
-    ]);
-
-    setTask({
-      id: 0,
-      taskDescription: "",
-      isCompleted: false,
-    });
+  async function fetchBooks() {
+    setIsLoading(true);
+    setError(null)
+    try {
+    const response = await fetch(endPoint);
+    const data = await response.json();
+    setBooks(data.entries);
+  } catch(error){
+    setError(error)
   }
-
-  // id: 0,
-  //   taskDescription: "",
-  //   isCompleted: false,
-
-  function handleCompleteButton(id) {
-    const mapped = todos.map((task) => {
-      return task.id === Number(id)
-        ? {
-            ...task,
-            isCompleted: true,
-          }
-        : { ...task };
-    });
-
-    setTodos(mapped);
-  }
-
-  return (
-    <div className="App">
-      <h1>ToDo List</h1>
-      <form onSubmit={addTodos}>
-        <div>
-          <label>
-            Task
-            <input
-              type="text"
-              name="taskDescription"
-              onChange={(event) =>
-                setTask({
-                  taskDescription: event.target.value,
-                  isCompleted: false,
-                })
-              }
-            />
-          </label>
-          <button>Add Todo</button>
-        </div>
-      </form>
-
-      {todos.map((todo, index) => {
-        return (
-          <div>
-            <div key={todo.id + index}>
-              {todo.isCompleted ? (
-                <strike>{todo.taskDescription}</strike>
-              ) : (
-                <p>{todo.taskDescription}</p>
-              )}
-            </div>
-            <button onClick={() => handleCompleteButton(todo.id)}>
-              Complete
-            </button>
-          </div>
-        );
-      })}
-    </div>
-  );
+  setIsLoading(false);
 }
+ 
+ return (
+    <div>
+      <h1>Books</h1>
+      <button onClick={fetchBooks}>Find</button>
+      {error && <p>something was wrong: {error.message}</p>}
+      {isLoading && <LoadingSpinner />}
+      {books && books.map((book) => {
+
+       const convertedDate = new Date(book.last_modified.value)
+       const dateTimeFormat = new Intl.DateTimeFormat('en', {
+        year: 'numeric', })
+        const bookYear = dateTimeFormat.format(convertedDate);
+
+        return (
+        <div className='book'>
+          <h3>{book.title}</h3>
+          <p>{bookYear}</p>
+        </div>
+      )}) }
+    </div>  
+  )
+}
+
+
 
 export default App;
